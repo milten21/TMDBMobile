@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TMDBMobile.Core.Pages.SearchPage"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:effects="clr-namespace:TMDBMobile.Core.Effects"
+             xmlns:views="clr-namespace:TMDBMobile.Core.Views"
+             xmlns:utils="clr-namespace:TMDBMobile.Core.Utils"
+             Title="Search">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ResultLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="Opacity" Value="0.9"/>
+                <Setter Property="effects:ShadowEffect.HasShadow" Value="True" />
+                <Setter Property="effects:ShadowEffect.Color" Value="Black" />
+                <Setter Property="effects:ShadowEffect.Radius" Value="3" />
+                <Setter Property="effects:ShadowEffect.DistanceX" Value="2.5" />
+                <Setter Property="effects:ShadowEffect.DistanceY" Value="2.5" />
+            </Style>
+
+            <DataTemplate x:Key="SearchResultCell">
+                <views:SearchResultCell>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="64" />
+                        </Grid.ColumnDefinitions>
+
+                        <ffimageloading:CachedImage Grid.Column="0" Grid.ColumnSpan="2"
+                                                    Grid.Row="0" Grid.RowSpan="2"
+                                                    CacheDuration="1"
+                                                    LoadingPlaceholder="poster_placeholder"
+                                                    ErrorPlaceholder="poster_placeholder"
+                                                    RetryCount="3" RetryDelay="200"
+                                                    Aspect="AspectFill"
+                                                    Source="{Binding PosterPath, Converter={StaticResource PosterPathConverter}}" />
+
+                        <StackLayout Grid.Column="0" Grid.ColumnSpan="2"
+                                     Grid.Row="0" Grid.RowSpan="2"
+                                     Orientation="Vertical"
+                                     Spacing="4">
+
+                            <StackLayout.Padding>
+                                <OnPlatform x:TypeArguments="Thickness" >
+                                    <On Platform="Android" Value="16,2,8,2" />
+                                    <On Platform="iOS" Value="16,2,8,2" />
+                                </OnPlatform>
+                            </StackLayout.Padding>
+
+                            <Label Text="{Binding Title}"
+                                   Style="{StaticResource ResultLabelStyle}"
+                                   Font="Bold"/>
+
+                            <Label Text="{Binding ReleaseDate, StringFormat='{0:d MMM yyyy}'}}"
+                                   Style="{StaticResource ResultLabelStyle}"
+                                   Font="Semibold"/>
+                        </StackLayout>
+
+                    </Grid>
+
+                </views:SearchResultCell>
+            </DataTemplate>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <StackLayout Spacing="0">
+            <SearchBar Placeholder="Type to search..."
+                       Text="{Binding Query}">
+                <SearchBar.Margin>
+                    <OnPlatform x:TypeArguments="Thickness" >
+                        <On Platform="Android" Value="-12,0,0,0" />
+                    </OnPlatform>
+                </SearchBar.Margin>
+            </SearchBar>
+
+            <utils:StateContainer State="{Binding State}" VerticalOptions="FillAndExpand">
+                <utils:StateCondition State="Searching">
+                    <ListView x:Name="MoviesList"
+                              ItemsSource="{Binding Movies}"
+                              ItemAppearing="SearchItemAppearing"
+                              CachingStrategy="RecycleElement"
+                              ItemTemplate="{StaticResource SearchResultCell}">
+                        <ListView.Footer>
+                            <StackLayout>
+                                <ActivityIndicator HorizontalOptions="Center"
+                                                   VerticalOptions="Center"
+                                                   IsRunning="{Binding IsSearching}"
+                                                   IsVisible="{Binding IsSearching}" />
+                            </StackLayout>
+                        </ListView.Footer>
+                    </ListView>
+                </utils:StateCondition>
+
+                <utils:StateCondition State="Discover">
+                    <StackLayout>
+                        <Label Text="Discover" HorizontalOptions="Start"
+                               VerticalOptions="Start" Margin="8"
+                               FontSize="24" />
+
+                        <ListView ItemsSource="{Binding DiscoverMovies}"
+                                  ItemAppearing="DiscoverItemAppearing"
+                                  CachingStrategy="RecycleElement"
+                                  ItemTemplate="{StaticResource SearchResultCell}">
+                            <ListView.Footer>
+                                <StackLayout>
+                                    <ActivityIndicator HorizontalOptions="Center"
+                                                       VerticalOptions="Center"
+                                                       IsRunning="{Binding IsSearching}"
+                                                       IsVisible="{Binding IsSearching}" />
+                                </StackLayout>
+                            </ListView.Footer>
+                        </ListView>
+                    </StackLayout>
+                </utils:StateCondition>
+
+                <utils:StateCondition State="Empty">
+                    <Label Text="Nothing was found" FontSize="32" 
+                           HorizontalOptions="Center" VerticalOptions="Start" Margin="0,16,0,0"/>
+                </utils:StateCondition>
+            </utils:StateContainer>
+
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
