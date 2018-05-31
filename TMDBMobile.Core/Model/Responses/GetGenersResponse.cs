@@ -2,7 +2,7 @@
 
 namespace TMDBMobile.Core.Model
 {
-    public struct GetGenersResponse
+    public class GetGenersResponse : TMDBResponse
     {
         public List<Genre> Genres { get; set; }
     }

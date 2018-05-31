@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:utils="clr-namespace:TMDBMobile.Core.Utils"
+             x:Class="TMDBMobile.Core.Pages.FavoriteMoviesPage">
+    <ContentPage.Content>
+        <utils:StateContainer State="{Binding State}" VerticalOptions="FillAndExpand">
+            <utils:StateCondition State="NotAuthenticated">
+                <StackLayout HorizontalOptions="FillAndExpand"
+                             VerticalOptions="Center"
+                             Spacing="16"
+                             Padding="16">
+                    <Label Text="You need to login to use this functionality"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           HorizontalTextAlignment="Center"
+                           Font="20" />
+                    <Button Text="Tap here to login" Font="16"
+                            Command="{Binding PresentLoginPage}"
+                            VerticalOptions="Center" HorizontalOptions="Center"/>
+                </StackLayout>
+            </utils:StateCondition>
+
+            <utils:StateCondition State="Authenticated">
+                <Label Text="Authenticated State"/>
+            </utils:StateCondition>
+
+            <utils:StateCondition State="Empty">
+                <Label Text="Empty State" />
+            </utils:StateCondition>
+        </utils:StateContainer>
+    </ContentPage.Content>
+</ContentPage>

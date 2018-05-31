@@ -6,6 +6,7 @@ using System.Windows.Input;
 
 using TMDBMobile.Core.Actions;
 using TMDBMobile.Core.Model;
+using TMDBMobile.Core.Redux;
 using TMDBMobile.Core.Services;
 using TMDBMobile.Core.States;
 using Xamarin.Forms;
@@ -23,9 +24,7 @@ namespace TMDBMobile.Core.PageModels
     public class SearchPageModel : PageModel
     {
         public SearchPageState State { get; private set; } = SearchPageState.Discover;
-
-        public ITMDBService TMDBService { get; }
-
+        
         public ICommand LoadDiscoverPageCommand { get; }
         public ICommand LoadNextPageCommand { get; }
 
@@ -42,23 +41,41 @@ namespace TMDBMobile.Core.PageModels
             }
         }
 
+        private Movie _selectedMovie;
+        public Movie SelectedMovie
+        {
+            get => _selectedMovie;
+            set
+            {
+                _selectedMovie = value;
+                RaisePropertyChanged();
+
+                if (_selectedMovie == null)
+                    return;
+
+                CoreMethods.PushPageModel<MovieDetailsPageModel>(SelectedMovie);
+
+                SelectedMovie = null;
+            }
+        }
+
+
         public bool IsSearching { get; set; }
 
         public List<Movie> Movies { get; set; }
         public List<Movie> DiscoverMovies { get; set; }
 
         private CancellationTokenSource _cancelSearch = new CancellationTokenSource();
+        private Store<AppState> _store;
 
-        public SearchPageModel(ITMDBService tmdbService, SearchActionCreator searchActionCreator,
+        public SearchPageModel(SearchActionCreator searchActionCreator,
             DiscoverActionCreator discoverActionCreator, IAppStoreContainer storeContainer)
         {
-            TMDBService = tmdbService;
-
-            var store = storeContainer.Store;
+            _store = storeContainer.Store;
 
             LoadDiscoverPageCommand = new Command(async () =>
             {
-                await store.Dispatch(discoverActionCreator.LoadNextPageAction);
+                await _store.Dispatch(discoverActionCreator.LoadNextPageAction);
             });
 
             LoadNextPageCommand = new Command(async () =>
@@ -69,7 +86,7 @@ namespace TMDBMobile.Core.PageModels
                     await Task.Delay(500, _cancelSearch.Token)
                     .ContinueWith(async delegate
                     {
-                            await store.Dispatch(searchActionCreator.LoadNextPageAction(Query));
+                            await _store.Dispatch(searchActionCreator.LoadNextPageAction(Query));
                     },
                     CancellationToken.None,
                     TaskContinuationOptions.OnlyOnRanToCompletion,
@@ -81,7 +98,7 @@ namespace TMDBMobile.Core.PageModels
                 }
             });
 
-            store.Subscribe(s =>
+            _store.Subscribe(s =>
             {
                 IsSearching = s.SearchState.IsSearching || s.DiscoverState.IsLoadingPage;
 

@@ -12,6 +12,10 @@ namespace TMDBMobile.Core.Services
 
         public IConfigurationService ConfigurationService { get; }
 
+        protected string CreateSessionPath => "authentication/session/new";
+        protected string CreateTokenRequestPath => "authentication/token/new";
+        protected string ValidateTokenPath  => "authentication/token/validate_with_login";
+
         protected string MoviesSearchPath => "search/movie";
         protected string MoviesGenresPath => "genre/movie/list";
         protected string MoviesDiscoverPath => "discover/movie";
@@ -26,6 +30,33 @@ namespace TMDBMobile.Core.Services
             };
 
             RestClient.AddDefaultParameter("api_key", ConfigurationService.ApiKey, ParameterType.QueryString);
+        }
+
+        public async Task<IRestResponse<RequestTokenResponse>> CreateTokenRequest()
+        {
+            var request = new RestRequest(CreateTokenRequestPath, Method.GET);
+
+            return await Execute<RequestTokenResponse>(request);
+        }
+
+        public async Task<IRestResponse<RequestTokenResponse>> ValidateToken(string username, string password, string requestToken)
+        {
+            var request = new RestRequest(ValidateTokenPath, Method.GET);
+
+            request.AddParameter("username", username);
+            request.AddParameter("password", password);
+            request.AddParameter("request_token", requestToken);
+
+            return await Execute<RequestTokenResponse>(request);
+        }
+
+        public async Task<IRestResponse<SessionResponse>> CreateSession(string requestToken)
+        {
+            var request = new RestRequest(CreateSessionPath);
+
+            request.AddParameter("request_token", requestToken);
+
+            return await Execute<SessionResponse>(request);
         }
 
         public async Task<IRestResponse<MovieSearchResult>> Search(string query, int page = 1, bool includeAdult = false, string language = "en-US")

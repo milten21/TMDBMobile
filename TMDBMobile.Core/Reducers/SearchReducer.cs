@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FreshMvvm;
+using System.Collections.Generic;
 using TMDBMobile.Core.Actions;
 using TMDBMobile.Core.Model;
 using TMDBMobile.Core.Redux;

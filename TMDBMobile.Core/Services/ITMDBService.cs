@@ -7,8 +7,13 @@ namespace TMDBMobile.Core.Services
 {
     public interface ITMDBService
     {
+        Task<IRestResponse<RequestTokenResponse>> CreateTokenRequest();
+        Task<IRestResponse<SessionResponse>> CreateSession(string requestToken);
+        Task<IRestResponse<RequestTokenResponse>> ValidateToken(string username, string password, string requestToken);
+
         Task<IRestResponse<MovieSearchResult>> Search(string query, int page = 1, bool includeAdult = false, string language = "en-US");
         Task<IRestResponse<MovieSearchResult>> Discover(int page = 1, bool includeAdult = false, string language = "en-US");
+
         Task<IRestResponse<List<Genre>>> GetGenres();
     }
 }

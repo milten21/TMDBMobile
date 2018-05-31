@@ -1,13 +1,73 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:effects="clr-namespace:TMDBMobile.Core.Effects"
+             xmlns:views="clr-namespace:TMDBMobile.Core.Views"
              xmlns:convertors="clr-namespace:TMDBMobile.Core.Converters"
              x:Class="TMDBMobile.App">
-	<Application.Resources>
-
+    <Application.Resources>
         <ResourceDictionary>
             <convertors:PosterPathConverter x:Key="PosterPathConverter"/>
-        </ResourceDictionary>
+            <convertors:InvertBoolConverter x:Key="InvertBoolConverter"/>
 
+            <Style x:Key="ResultLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="Opacity" Value="0.9"/>
+                <Setter Property="effects:ShadowEffect.HasShadow" Value="True" />
+                <Setter Property="effects:ShadowEffect.Color" Value="Black" />
+                <Setter Property="effects:ShadowEffect.Radius" Value="3" />
+                <Setter Property="effects:ShadowEffect.DistanceX" Value="2.5" />
+                <Setter Property="effects:ShadowEffect.DistanceY" Value="2.5" />
+            </Style>
+
+            <DataTemplate x:Key="SearchResultCell">
+                <views:SearchResultCell>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="64" />
+                        </Grid.ColumnDefinitions>
+
+                        <ffimageloading:CachedImage Grid.Column="0" Grid.ColumnSpan="2"
+                                                    Grid.Row="0" Grid.RowSpan="2"
+                                                    CacheDuration="1"
+                                                    LoadingPlaceholder="poster_placeholder"
+                                                    ErrorPlaceholder="poster_placeholder"
+                                                    RetryCount="3" RetryDelay="200"
+                                                    Aspect="AspectFill"
+                                                    Source="{Binding PosterPath, Converter={StaticResource PosterPathConverter}}" />
+
+                        <StackLayout Grid.Column="0" Grid.ColumnSpan="2"
+                                     Grid.Row="0" Grid.RowSpan="2"
+                                     Orientation="Vertical"
+                                     Spacing="4">
+
+                            <StackLayout.Padding>
+                                <OnPlatform x:TypeArguments="Thickness" >
+                                    <On Platform="Android" Value="16,2,8,2" />
+                                    <On Platform="iOS" Value="16,2,8,2" />
+                                </OnPlatform>
+                            </StackLayout.Padding>
+
+                            <Label Text="{Binding Title}"
+                                   Style="{StaticResource ResultLabelStyle}"
+                                   Font="Bold"/>
+
+                            <Label Text="{Binding ReleaseDate, StringFormat='{0:d MMM yyyy}'}}"
+                                   Style="{StaticResource ResultLabelStyle}"
+                                   Font="Semibold"/>
+                        </StackLayout>
+
+                    </Grid>
+
+                </views:SearchResultCell>
+            </DataTemplate>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

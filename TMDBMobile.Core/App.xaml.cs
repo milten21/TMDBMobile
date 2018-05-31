@@ -9,6 +9,8 @@ using Xamarin.Forms;
 
 namespace TMDBMobile
 {
+    // Workaround to avoid using static instance and have possibility
+    //  to use Store inside IoC container
     public interface IAppStoreContainer
     {
         Store<AppState> Store { get; }
@@ -22,7 +24,8 @@ namespace TMDBMobile
         {
             var reducer = new CompositeReducer<AppState>()
                 .Part(s => s.SearchState, SearchReducer.GetReducer())
-                .Part(s => s.DiscoverState, DiscoverReducer.GetReducer());
+                .Part(s => s.DiscoverState, DiscoverReducer.GetReducer())
+                .Part(s => s.AuthenticationState, AuthenticationReducer.GetReducer());
 
             Store = new Store<AppState>(reducer);
         }
@@ -38,6 +41,7 @@ namespace TMDBMobile
             RegisterActionCreators();
 
             var tabbedPage = new FreshTabbedNavigationContainer();
+            tabbedPage.AddTab<FavoriteMoviesPageModel>("Favorites", null);
             tabbedPage.AddTab<SearchPageModel>("Search", null);
             MainPage = tabbedPage;
         }

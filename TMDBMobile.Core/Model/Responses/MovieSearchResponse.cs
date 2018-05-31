@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TMDBMobile.Core.Model
 {
-    public struct MovieSearchResult
+    public class MovieSearchResult : TMDBResponse
     {
         [JsonProperty(PropertyName = "total_results")]
         public int TotalResults { get; set; }
