@@ -23,7 +23,7 @@ namespace TMDBMobile.Core.Actions
                 if (state.TotalPages != 0 && state.LastLoadedPage == state.TotalPages)
                     return;
 
-                dispatcher(new StartLoadingPage());
+                dispatcher(new StartLoadingDiscoverPage());
 
                 var response = await TMDBService.Discover(++state.LastLoadedPage);
 

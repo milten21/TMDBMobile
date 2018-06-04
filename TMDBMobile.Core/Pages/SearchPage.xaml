@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TMDBMobile.Core.Pages.SearchPage"
@@ -18,6 +18,7 @@
             <utils:StateContainer State="{Binding State}" VerticalOptions="FillAndExpand">
                 <utils:StateCondition State="Searching">
                     <ListView x:Name="MoviesList"
+                              SeparatorVisibility="None"
                               SelectedItem="{Binding SelectedMovie}"
                               ItemsSource="{Binding Movies}"
                               ItemAppearing="SearchItemAppearing"
@@ -41,9 +42,12 @@
                                FontSize="24" />
 
                         <ListView SelectedItem="{Binding SelectedMovie}"
+                                  SeparatorVisibility="None"
                                   ItemsSource="{Binding DiscoverMovies}"
                                   ItemAppearing="DiscoverItemAppearing"
+                                  ItemSelected="Handle_ItemSelected"
                                   CachingStrategy="RecycleElement"
+                                  HasUnevenRows="false"
                                   ItemTemplate="{StaticResource SearchResultCell}">
                             <ListView.Footer>
                                 <StackLayout>

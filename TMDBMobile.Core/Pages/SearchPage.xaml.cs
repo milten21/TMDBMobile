@@ -2,6 +2,7 @@
 using TMDBMobile.Core.PageModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using System;
 
 namespace TMDBMobile.Core.Pages
 {
@@ -31,6 +32,14 @@ namespace TMDBMobile.Core.Pages
 
             if ((Movie)e.Item == PageModel.DiscoverMovies[PageModel.DiscoverMovies.Count - 1])
                 PageModel.LoadDiscoverPageCommand.Execute(null);
+        }
+
+        private void Handle_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (!(sender is ListView listView))
+                return;
+            
+            listView.SelectedItem = null;
         }
     }
 }

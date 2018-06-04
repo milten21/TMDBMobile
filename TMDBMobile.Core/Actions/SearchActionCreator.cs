@@ -31,15 +31,6 @@ namespace TMDBMobile.Core.Actions
                     });
                 }
 
-                if (string.IsNullOrEmpty(query))
-                {
-                    dispatcher(new ResetSearchResults
-                    {
-                        Query = query
-                    });
-                    return;
-                }
-
                 dispatcher(new StartLoadingPage());
 
                 state = getState().SearchState;

@@ -20,6 +20,7 @@ namespace TMDBMobile.iOS.Effect
                 UpdateColor();
                 UpdateOffset();
                 Control.Layer.ShadowOpacity = 1.0f;
+                Control.Layer.ShouldRasterize = true;
             }
             catch (Exception ex)
             {

@@ -75,11 +75,17 @@ namespace TMDBMobile.Core.PageModels
 
             LoadDiscoverPageCommand = new Command(async () =>
             {
+                if (IsSearching)
+                    return;
+                
                 await _store.Dispatch(discoverActionCreator.LoadNextPageAction);
             });
 
             LoadNextPageCommand = new Command(async () =>
             {
+                if (IsSearching)
+                    return;
+                
                 try
                 {
                     Interlocked.Exchange(ref _cancelSearch, new CancellationTokenSource()).Cancel();
