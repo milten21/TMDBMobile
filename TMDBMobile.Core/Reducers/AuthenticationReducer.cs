@@ -34,6 +34,13 @@ namespace TMDBMobile.Core.Reducers
                     state.IsLoggingIn = false;
 
                     return state;
+                })
+                .When<LogoutAction>((state, action) =>
+                {
+                    state.RequestToken = null;
+                    state.SessionId = null;
+
+                    return state;
                 });
         }
     }

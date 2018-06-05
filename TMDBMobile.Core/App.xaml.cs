@@ -1,10 +1,14 @@
-﻿using FreshMvvm;
+﻿using System.Collections.Generic;
+using System.Linq;
+using FreshMvvm;
 using TMDBMobile.Core.Actions;
 using TMDBMobile.Core.PageModels;
+using TMDBMobile.Core.Pages;
 using TMDBMobile.Core.Reducers;
 using TMDBMobile.Core.Redux;
 using TMDBMobile.Core.Services;
 using TMDBMobile.Core.States;
+using TMDBMobile.Core.Utils;
 using Xamarin.Forms;
 
 namespace TMDBMobile
@@ -25,7 +29,8 @@ namespace TMDBMobile
             var reducer = new CompositeReducer<AppState>()
                 .Part(s => s.SearchState, SearchReducer.GetReducer())
                 .Part(s => s.DiscoverState, DiscoverReducer.GetReducer())
-                .Part(s => s.AuthenticationState, AuthenticationReducer.GetReducer());
+                .Part(s => s.AuthenticationState, AuthenticationReducer.GetReducer())
+                .Part(s => s.FavouriteState, FavouriteReducer.GetReducer());
 
             Store = new Store<AppState>(reducer);
         }
@@ -33,6 +38,8 @@ namespace TMDBMobile
 
     public partial class App : Application
     {
+        private FreshTabbedNavigationContainer _tabbedPage;
+
         public App()
         {
             InitializeComponent();
@@ -40,14 +47,33 @@ namespace TMDBMobile
             RegisterServices();
             RegisterActionCreators();
 
-            var tabbedPage = new FreshTabbedNavigationContainer();
-            tabbedPage.AddTab<FavoriteMoviesPageModel>("Favorites", null);
-            tabbedPage.AddTab<SearchPageModel>("Search", null);
-            MainPage = tabbedPage;
+            _tabbedPage = new FreshTabbedNavigationContainer();
+            _tabbedPage.AddTab<FavoriteMoviesPageModel>("Favorites", null);
+            _tabbedPage.AddTab<SearchPageModel>("Search", null);
+
+            MainPage = _tabbedPage;
+
+            SubscribeAuthenticationChanges();
+        }
+
+        private void SubscribeAuthenticationChanges()
+        {
+            var store = FreshIOC.Container.Resolve<IAppStoreContainer>().Store;
+
+            store.Subscribe(s =>
+            {
+                var state = s.AuthenticationState;
+
+                if (!string.IsNullOrEmpty(state.SessionId) && _tabbedPage.TabbedPages.FirstOrDefault(p => p is ProfilePage) == null)
+                    _tabbedPage.AddTab<ProfilePageModel>("Profile", null);
+                else
+                    _tabbedPage.RemoveTab<ProfilePage>();
+            });
         }
 
         private void RegisterServices()
         {
+            
 #if DEBUG
             FreshIOC.Container.Register<IConfigurationService, DebugConfigurationService>();
 #else
@@ -67,8 +93,10 @@ namespace TMDBMobile
             // TODO: Find out a solution
             // Registred as multiinstance, gets crash when trying to register as singleton
             FreshIOC.Container.Register(new SearchActionCreator(tmdbService,
-                FreshIOC.Container.Resolve<IAppStoreContainer>()));
+                                                                FreshIOC.Container.Resolve<IAppStoreContainer>()));
             FreshIOC.Container.Register(new DiscoverActionCreator(tmdbService,
+                                                                  FreshIOC.Container.Resolve<IAppStoreContainer>()));
+            FreshIOC.Container.Register(new FavouriteActionCreator(tmdbService,
                 FreshIOC.Container.Resolve<IAppStoreContainer>()));
         }
     }

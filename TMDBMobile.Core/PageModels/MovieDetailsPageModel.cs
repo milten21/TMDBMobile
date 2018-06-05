@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TMDBMobile.Core.Model;
+﻿using TMDBMobile.Core.Model;
 
 namespace TMDBMobile.Core.PageModels
 {
@@ -13,12 +10,12 @@ namespace TMDBMobile.Core.PageModels
 
         public override void Init(object initData)
         {
-            if (initData is Movie movie)
-            {
-                Movie = movie;
-
-                Title = Movie.Title;
-            }
+            if (!(initData is Movie movie))
+                return;
+            
+            Movie = movie;
+            
+            Title = Movie.Title;
         }
     }
 }

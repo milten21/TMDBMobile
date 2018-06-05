@@ -1,7 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:utils="clr-namespace:TMDBMobile.Core.Utils"
+             Title="Favourite"
              x:Class="TMDBMobile.Core.Pages.FavoriteMoviesPage">
     <ContentPage.Content>
         <utils:StateContainer State="{Binding State}" VerticalOptions="FillAndExpand">
@@ -22,12 +23,31 @@
             </utils:StateCondition>
 
             <utils:StateCondition State="Authenticated">
-                <Label Text="Authenticated State"/>
+                <ListView SelectedItem="{Binding SelectedMovie}"
+                          ItemsSource="{Binding Movies}"
+                          ItemAppearing="MovieItemAppearing"
+                          ItemSelected="HandleItemSelected"
+                          ItemTemplate="{StaticResource SearchResultCell}"
+                          Style="{StaticResource ResultsListStyle}">
+                    <ListView.Footer>
+                        <StackLayout>
+                            <ActivityIndicator HorizontalOptions="Center"
+                                               VerticalOptions="Center"
+                                               IsRunning="{Binding IsSearching}"
+                                               IsVisible="{Binding IsSearching}" />
+                        </StackLayout>
+                    </ListView.Footer>
+                </ListView>
             </utils:StateCondition>
 
             <utils:StateCondition State="Empty">
-                <Label Text="Empty State" />
+                <StackLayout HorizontalOptions="FillAndExpand"
+                             VerticalOptions="Center">
+                    <Label Text="You don't have any favourite movies yet" />
+                    <Label Text="Tap a ✰ button to add new movie" />
+                </StackLayout>
             </utils:StateCondition>
+            
         </utils:StateContainer>
     </ContentPage.Content>
 </ContentPage>

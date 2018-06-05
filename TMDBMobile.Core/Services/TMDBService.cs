@@ -14,7 +14,10 @@ namespace TMDBMobile.Core.Services
 
         protected string CreateSessionPath => "authentication/session/new";
         protected string CreateTokenRequestPath => "authentication/token/new";
-        protected string ValidateTokenPath  => "authentication/token/validate_with_login";
+        protected string ValidateTokenPath => "authentication/token/validate_with_login";
+
+        // No need to explicitly set accout_id, it will be automatically replaced by API
+        protected string GetFavouritesMoviesPath => "account/{account_id}/rated/movies";
 
         protected string MoviesSearchPath => "search/movie";
         protected string MoviesGenresPath => "genre/movie/list";
@@ -30,6 +33,17 @@ namespace TMDBMobile.Core.Services
             };
 
             RestClient.AddDefaultParameter("api_key", ConfigurationService.ApiKey, ParameterType.QueryString);
+        }
+
+        public void SetSessionId(string sessionId)
+        {
+            RemoveSessionId();
+            RestClient.AddDefaultParameter("session_id", sessionId, ParameterType.QueryString);
+        }
+
+        public void RemoveSessionId()
+        {
+            RestClient.RemoveDefaultParameter("session_id");
         }
 
         public async Task<IRestResponse<RequestTokenResponse>> CreateTokenRequest()
@@ -74,9 +88,20 @@ namespace TMDBMobile.Core.Services
         public async Task<IRestResponse<MovieSearchResult>> Discover(int page = 1, bool includeAdult = false, string language = "en-US")
         {
             var request = new RestRequest(MoviesDiscoverPath, Method.GET);
-            
+
             request.AddParameter("page", page, ParameterType.QueryString);
             request.AddParameter("include_adult", includeAdult, ParameterType.QueryString);
+            request.AddParameter("language", language, ParameterType.QueryString);
+            request.AddParameter("sort_by", "popularity.desc", ParameterType.QueryString);
+
+            return await Execute<MovieSearchResult>(request);
+        }
+
+        public async Task<IRestResponse<MovieSearchResult>> GetFavoriteMovies(int page = 1, string language = "en-US")
+        {
+            var request = new RestRequest(GetFavouritesMoviesPath, Method.GET);
+
+            request.AddParameter("page", page, ParameterType.QueryString);
             request.AddParameter("language", language, ParameterType.QueryString);
             request.AddParameter("sort_by", "popularity.desc", ParameterType.QueryString);
 

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TMDBMobile.Core.Services
+﻿namespace TMDBMobile.Core.Services
 {
     public class DebugConfigurationService : IConfigurationService
     {

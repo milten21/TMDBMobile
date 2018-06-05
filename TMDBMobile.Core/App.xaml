@@ -21,6 +21,19 @@
                 <Setter Property="effects:ShadowEffect.DistanceY" Value="2.5" />
             </Style>
 
+            <Style x:Key="ResultsListStyle" TargetType="ListView">
+                <Setter Property="SeparatorVisibility" Value="None" />
+                <Setter Property="HasUnevenRows" Value="False" />
+                <Setter Property="RowHeight">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="x:Int32">
+                            <On Platform="Android" Value="46" />
+                            <On Platform="iOS" Value="48" />
+                        </OnPlatform>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            
             <DataTemplate x:Key="SearchResultCell">
                 <views:SearchResultCell>
                     <Grid>

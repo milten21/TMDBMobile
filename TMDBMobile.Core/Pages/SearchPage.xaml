@@ -17,13 +17,11 @@
 
             <utils:StateContainer State="{Binding State}" VerticalOptions="FillAndExpand">
                 <utils:StateCondition State="Searching">
-                    <ListView x:Name="MoviesList"
-                              SeparatorVisibility="None"
-                              SelectedItem="{Binding SelectedMovie}"
+                    <ListView SelectedItem="{Binding SelectedMovie}"
                               ItemsSource="{Binding Movies}"
                               ItemAppearing="SearchItemAppearing"
-                              CachingStrategy="RecycleElement"
-                              ItemTemplate="{StaticResource SearchResultCell}">
+                              ItemTemplate="{StaticResource SearchResultCell}"
+                              Style="{StaticResource ResultsListStyle}">
                         <ListView.Footer>
                             <StackLayout>
                                 <ActivityIndicator HorizontalOptions="Center"
@@ -42,13 +40,11 @@
                                FontSize="24" />
 
                         <ListView SelectedItem="{Binding SelectedMovie}"
-                                  SeparatorVisibility="None"
                                   ItemsSource="{Binding DiscoverMovies}"
                                   ItemAppearing="DiscoverItemAppearing"
                                   ItemSelected="Handle_ItemSelected"
-                                  CachingStrategy="RecycleElement"
-                                  HasUnevenRows="false"
-                                  ItemTemplate="{StaticResource SearchResultCell}">
+                                  ItemTemplate="{StaticResource SearchResultCell}"
+                                  Style="{StaticResource ResultsListStyle}">
                             <ListView.Footer>
                                 <StackLayout>
                                     <ActivityIndicator HorizontalOptions="Center"
