@@ -11,6 +11,7 @@ namespace TMDBMobile.Core.Actions
         private Store<AppState> Store { get; }
 
         public Store<AppState>.AsyncAction LoadGenresAction { get; private set; }
+        public Store<AppState>.AsyncAction LoadProileAction { get; private set; }
 
         public DataActionCreator(ITMDBService tmdbService, IAppStoreContainer storeContainer)
         {
@@ -24,15 +25,37 @@ namespace TMDBMobile.Core.Actions
                 if (!response.IsSuccessful)
                 {
                     dispatcher(new GenresLoaded());
+                    return;
                 }
-                else
+
+                dispatcher(new GenresLoaded
                 {
-                    dispatcher(new GenresLoaded
-                    {
-                        Genres = response.Data.Genres
-                    });
-                }
+                    Genres = response.Data.Genres
+                });
             };
+
+            LoadProileAction = async (dispatcher, getState) =>
+            {
+                var response = await TMDBService.GetProfile();
+
+                dispatcher(new StartLoadingProfile());
+
+                if (!response.IsSuccessful)
+                {
+                    dispatcher(new FailedLoadProfile
+                    {
+                        Exception = new Exception("Failed to load profile")
+                    });
+
+                    return;
+                }
+
+                dispatcher(new ProfileLoaded
+                {
+                    Profile = response.Data
+                });
+            };
+
         }
     }
 }

@@ -1,12 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:utils="clr-namespace:TMDBMobile.Core.Utils"
+             Title="Profile"
              x:Class="TMDBMobile.Core.Pages.ProfilePage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="I am profile page" />
-            <Button Text="Logout" 
-                    Command="{Binding LogoutCommand}"/>
-        </StackLayout>
+
+        <utils:StateContainer State="{Binding State}" VerticalOptions="FillAndExpand">
+            
+            <utils:StateCondition State="Loaded">
+                <StackLayout Padding="16"
+                             VerticalOptions="FillAndExpand"
+                             HorizontalOptions="FillAndExpand">
+                    <Label Text="{Binding Profile, Converter={StaticResource ProfileTitleConverter}}"
+                           FontSize="26"/>
+                    <Button Text="Logout" 
+                            Command="{Binding LogoutCommand}"/>
+                </StackLayout>
+            </utils:StateCondition>
+            
+            <utils:StateCondition State="Loading">
+                <ActivityIndicator HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   IsRunning="true"
+                                   IsVisible="true" />
+            </utils:StateCondition>
+            
+            <utils:StateCondition State="Error">
+                <StackLayout HorizontalOptions="Center"
+                             VerticalOptions="Center">
+                    <Label Text="{Binding ErrorMessage}" />
+                    <Button Text="Retry" Command="{Binding LoadProfileCommand}" />
+                </StackLayout>
+            </utils:StateCondition>
+        </utils:StateContainer>
+        
     </ContentPage.Content>
 </ContentPage>

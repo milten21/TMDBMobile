@@ -11,6 +11,7 @@
             <convertors:PosterPathConverter x:Key="PosterPathConverter"/>
             <convertors:InvertBoolConverter x:Key="InvertBoolConverter"/>
             <convertors:GenresConverter x:Key="GenresConverter"/>
+            <convertors:ProfileTitleConverter x:Key="ProfileTitleConverter"/>
 
             <Style x:Key="ResultLabelStyle" TargetType="Label">
                 <Setter Property="TextColor" Value="White"/>

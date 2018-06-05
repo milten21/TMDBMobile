@@ -15,6 +15,7 @@ namespace TMDBMobile.Core.Services
         protected string CreateTokenRequestPath => "authentication/token/new";
         protected string ValidateTokenPath => "authentication/token/validate_with_login";
 
+        protected string GetAccountDetailsPath => "account";
         // No need to explicitly set accout_id, it will be automatically replaced by API
         protected string GetFavouritesMoviesPath => "account/{account_id}/favorite/movies";
 
@@ -110,6 +111,11 @@ namespace TMDBMobile.Core.Services
         public async Task<IRestResponse<GetGenersResponse>> GetGenres()
         {
             return await Execute<GetGenersResponse>(new RestRequest(MoviesGenresPath, Method.GET));
+        }
+
+        public async Task<IRestResponse<Profile>> GetProfile()
+        {
+            return await Execute<Profile>(new RestRequest(GetAccountDetailsPath, Method.GET));
         }
 
         protected async Task<IRestResponse<TResult>> Execute<TResult>(IRestRequest request)
