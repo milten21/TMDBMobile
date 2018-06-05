@@ -18,6 +18,6 @@ namespace TMDBMobile.Core.Services
         Task<IRestResponse<MovieSearchResult>> Discover(int page = 1, bool includeAdult = false, string language = "en-US");
         Task<IRestResponse<MovieSearchResult>> GetFavoriteMovies(int page = 1, string language = "en-US");
 
-        Task<IRestResponse<List<Genre>>> GetGenres();
+        Task<IRestResponse<GetGenersResponse>> GetGenres();
     }
 }

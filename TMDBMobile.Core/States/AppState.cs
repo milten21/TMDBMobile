@@ -5,6 +5,7 @@
         public AuthenticationState AuthenticationState { get; set; }
         public SearchState SearchState { get; set; }
         public DiscoverState DiscoverState { get; set; }
-        public FavouriteState FavouriteState { get; set; }
+        public FavoriteState FavoriteState { get; set; }
+        public DataState DataState { get; set; }
     }
 }

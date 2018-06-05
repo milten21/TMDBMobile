@@ -10,6 +10,7 @@
         <ResourceDictionary>
             <convertors:PosterPathConverter x:Key="PosterPathConverter"/>
             <convertors:InvertBoolConverter x:Key="InvertBoolConverter"/>
+            <convertors:GenresConverter x:Key="GenresConverter"/>
 
             <Style x:Key="ResultLabelStyle" TargetType="Label">
                 <Setter Property="TextColor" Value="White"/>

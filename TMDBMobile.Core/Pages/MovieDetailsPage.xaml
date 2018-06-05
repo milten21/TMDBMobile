@@ -1,13 +1,53 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             Title="{Binding Movie.Title}"
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
+             Title="{Binding Movie.Title}" 
              x:Class="TMDBMobile.Core.Pages.MovieDetailsPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Movie Details"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <ScrollView>
+            <StackLayout Spacing="0">
+
+                <ffimageloading:CachedImage Source="{Binding Movie.PosterPath, Converter={StaticResource PosterPathConverter}}"
+                                            CacheDuration="1" 
+                                            LoadingPlaceholder="poster_placeholder" ErrorPlaceholder="poster_placeholder" 
+                                            Aspect="AspectFit"
+                                            Margin="0,0,0,8"/>
+                
+                <StackLayout Orientation="Horizontal"
+                             Padding="16,8">
+                    <Label Text="Title" 
+                           FontAttributes="Bold"
+                           HorizontalOptions="StartAndExpand"/>
+                    <Label Text="{Binding Movie.Title}"
+                           HorizontalOptions="EndAndExpand"/>
+                </StackLayout>
+                
+                <StackLayout Orientation="Horizontal"
+                             Padding="16,8">
+                    <Label Text="Release Date" 
+                           FontAttributes="Bold"
+                           HorizontalOptions="StartAndExpand"/>
+                    <Label Text="{Binding Movie.ReleaseDate, StringFormat='{0:d MMM yyyy}'}"
+                           HorizontalOptions="EndAndExpand"/>
+                </StackLayout>
+                
+
+                <StackLayout Padding="16,8"
+                             Spacing="0">
+                    <Label Text="Genres"
+                           HorizontalOptions="StartAndExpand"
+                           FontAttributes="Bold"/>
+                    <Label Text="{Binding Movie.GenreIds, Converter={StaticResource GenresConverter}}" />
+                </StackLayout>
+                
+                <StackLayout Padding="16,8" 
+                             Spacing="0">
+                    <Label Text="Overview" 
+                           FontAttributes="Bold"/>
+                    <Label Text="{Binding Movie.Overview}" />
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

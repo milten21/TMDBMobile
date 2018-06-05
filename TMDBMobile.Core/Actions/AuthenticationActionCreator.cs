@@ -64,8 +64,6 @@ namespace TMDBMobile.Core.Actions
                     return;
                 }
 
-                TMDBService.SetSessionId(sessionResponse.Data.SessionId);
-
                 dispatcher(new LoggedInAction
                 {
                     SessionId = sessionResponse.Data.SessionId

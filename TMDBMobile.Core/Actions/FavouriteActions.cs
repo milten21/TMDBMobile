@@ -17,4 +17,6 @@ namespace TMDBMobile.Core.Actions
         public int TotalPages { get; set; }
         public List<Movie> NewPage { get; set; }
     }
+
+    public struct ReloadFavoritesAction { }
 }

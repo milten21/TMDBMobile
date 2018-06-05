@@ -1,6 +1,8 @@
 ﻿using System;
+using FreshMvvm;
 using TMDBMobile.Core.Actions;
 using TMDBMobile.Core.Redux;
+using TMDBMobile.Core.Services;
 using TMDBMobile.Core.States;
 
 namespace TMDBMobile.Core.Reducers
@@ -26,6 +28,10 @@ namespace TMDBMobile.Core.Reducers
                     state.SessionId = action.SessionId;
                     state.IsLoggingIn = false;
 
+
+                    CredentialsManager.Instance.SaveAccount(state.SessionId);
+                    FreshIOC.Container.Resolve<ITMDBService>().SetSessionId(state.SessionId);
+
                     return state;
                 })
                 .When<LoginFailedAction>((state, action) =>
@@ -33,12 +39,22 @@ namespace TMDBMobile.Core.Reducers
                     state.Exception = new Exception(action.StatusMessage);
                     state.IsLoggingIn = false;
 
+
                     return state;
                 })
                 .When<LogoutAction>((state, action) =>
                 {
                     state.RequestToken = null;
                     state.SessionId = null;
+
+                    CredentialsManager.Instance.DeleteAccount();
+
+                    return state;
+                })
+                .When<InitStoreAction>((state, action) =>
+                {
+                    state.SessionId = CredentialsManager.Instance.SessionId;
+                    FreshIOC.Container.Resolve<ITMDBService>().SetSessionId(state.SessionId);
 
                     return state;
                 });

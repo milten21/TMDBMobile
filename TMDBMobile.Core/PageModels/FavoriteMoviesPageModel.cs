@@ -60,22 +60,21 @@ namespace TMDBMobile.Core.PageModels
             
             store.Subscribe(s =>
             {
-                IsSearching = s.FavouriteState.IsLoadingPage;
+                IsSearching = s.FavoriteState.IsLoadingPage;
+                ReduceFavouriteState(s.FavoriteState);
 
                 if (!string.IsNullOrEmpty(s.AuthenticationState.SessionId) && s.AuthenticationState.Exception == null)
                 {
-                    if (s.FavouriteState.LastLoadedPage == 0 && !IsSearching)
+                    if (s.FavoriteState.LastLoadedPage == 0 && !IsSearching && s.FavoriteState.Exception == null)
                         LoadFavoritePageCommand.Execute(null);
 
-                    if (Movies.Count == 0 && IsSearching)
+                    if (Movies?.Count != 0 || IsSearching)
                         State = FavoritePageStates.Authenticated;
                     else
                         State = FavoritePageStates.Empty;
                 }
                 else
                     State = FavoritePageStates.NotAuthenticated;
-
-                ReduceFavouriteState(s.FavouriteState);
             });
 
             PresentLoginPage = new FreshAwaitCommand(async (parameter, tcs) =>
@@ -85,7 +84,7 @@ namespace TMDBMobile.Core.PageModels
             });
         }
 
-        private void ReduceFavouriteState(FavouriteState state)
+        private void ReduceFavouriteState(FavoriteState state)
         {
             if (state.Movies != null)
                 Movies = new List<Movie>(state.Movies);

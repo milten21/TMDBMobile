@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TMDBMobile.Core.Pages.LoginPage">
     <ContentPage.Content>
         <StackLayout VerticalOptions="Center"
                      HorizontalOptions="FillAndExpand"
-                     Spacing="16"
+                     Spacing="12"
                      Padding="32">
             <Label Text="The Movie DB"
                    Font="22"
@@ -20,11 +20,13 @@
                 <ActivityIndicator IsVisible="{Binding IsLoggingIn}"
                                    IsRunning="{Binding IsLoggingIn}"/>
                 <Button Text="Login" 
+                        TextColor="White"
+                        BackgroundColor="DeepSkyBlue"
                         Command="{Binding LoginCommand}"
                         IsVisible="{Binding IsLoggingIn, Converter={StaticResource InvertBoolConverter}}"/>
             </StackLayout>
             
-            <Button Text="Get Me Back" TextColor="LightBlue" 
+            <Button Text="Get Me Back" TextColor="DodgerBlue" 
                     BackgroundColor="Transparent"
                     Command="{Binding PopCommand}" />
         </StackLayout>

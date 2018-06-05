@@ -1,6 +1,5 @@
 ﻿using RestSharp;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMDBMobile.Core.Model;
 
@@ -17,7 +16,7 @@ namespace TMDBMobile.Core.Services
         protected string ValidateTokenPath => "authentication/token/validate_with_login";
 
         // No need to explicitly set accout_id, it will be automatically replaced by API
-        protected string GetFavouritesMoviesPath => "account/{account_id}/rated/movies";
+        protected string GetFavouritesMoviesPath => "account/{account_id}/favorite/movies";
 
         protected string MoviesSearchPath => "search/movie";
         protected string MoviesGenresPath => "genre/movie/list";
@@ -108,9 +107,9 @@ namespace TMDBMobile.Core.Services
             return await Execute<MovieSearchResult>(request);
         }
 
-        public async Task<IRestResponse<List<Genre>>> GetGenres()
+        public async Task<IRestResponse<GetGenersResponse>> GetGenres()
         {
-            return await Execute<List<Genre>>(new RestRequest(MoviesGenresPath, Method.GET));
+            return await Execute<GetGenersResponse>(new RestRequest(MoviesGenresPath, Method.GET));
         }
 
         protected async Task<IRestResponse<TResult>> Execute<TResult>(IRestRequest request)

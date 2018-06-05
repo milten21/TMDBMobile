@@ -117,6 +117,15 @@
     <BundleResource Include="Resources\Icon-Small%402x.png" />
     <BundleResource Include="Resources\Icon-Small%403x.png" />
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
+    <BundleResource Include="Resources\searchIcon%403x.png" />
+    <BundleResource Include="Resources\searchIcon%402x.png" />
+    <BundleResource Include="Resources\searchIcon.png" />
+    <BundleResource Include="Resources\starFilled.png" />
+    <BundleResource Include="Resources\starFilled%402x.png" />
+    <BundleResource Include="Resources\starFilled%403x.png" />
+    <BundleResource Include="Resources\starEmpty%403x.png" />
+    <BundleResource Include="Resources\starEmpty%402x.png" />
+    <BundleResource Include="Resources\starEmpty.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FFImageLoading, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -162,6 +171,10 @@
       <HintPath>..\..\packages\Xamarin.Forms.3.0.0.482510\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.iOS" />
+    <Reference Include="Xamarin.Auth">
+      <HintPath>..\..\packages\Xamarin.Auth.1.6.0.2\lib\Xamarin.iOS10\Xamarin.Auth.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\TMDBMobile.Core\TMDBMobile.Core.csproj">

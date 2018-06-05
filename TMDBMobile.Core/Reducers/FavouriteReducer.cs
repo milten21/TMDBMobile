@@ -8,9 +8,9 @@ namespace TMDBMobile.Core.Reducers
 {
     public static class FavouriteReducer
     {
-        public static SimpleReducer<FavouriteState> GetReducer()
+        public static SimpleReducer<FavoriteState> GetReducer()
         {
-            return new SimpleReducer<FavouriteState>()
+            return new SimpleReducer<FavoriteState>()
                 .When<StartLoadingFavouritePage>((state, action) =>
                 {
                     state.IsLoadingPage = true;
@@ -38,6 +38,15 @@ namespace TMDBMobile.Core.Reducers
                 {
                     state.IsLoadingPage = false;
                     state.Exception = action.Exception;
+
+                    return state;
+                })
+                .When<ReloadFavoritesAction>((state, action) =>
+                {
+                    state.Movies = null;
+                    state.Exception = null;
+                    state.LastLoadedPage = 0;
+                    state.TotalPages = 0;
 
                     return state;
                 });

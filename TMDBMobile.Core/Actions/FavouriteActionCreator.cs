@@ -18,7 +18,7 @@ namespace TMDBMobile.Core.Actions
 
             LoadNextPageAction = async (dispatcher, getState) =>
             {
-                var state = getState().FavouriteState;
+                var state = getState().FavoriteState;
 
                 if (state.TotalPages != 0 && state.LastLoadedPage == state.TotalPages)
                     return;
@@ -41,7 +41,7 @@ namespace TMDBMobile.Core.Actions
 
                 dispatcher(new FailedToLoadFavouritePage
                 {
-                    Exception = response.ErrorException
+                    Exception = new System.Exception(response.Data.StatusMessage)
                 });
             };
         }
