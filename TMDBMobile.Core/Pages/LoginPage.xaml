@@ -11,22 +11,24 @@
                    Font="22"
                    HorizontalOptions="Center"/>
             <Entry Placeholder="Username" 
-                   Text="{Binding Username}"/>
+                   Text="{Binding Username, Mode=TwoWay}"/>
             <Entry Placeholder="Password" 
                    Text="{Binding Password}"
                    IsPassword="True" />
+
+            <Label Text="My bad 2" />
             
             <StackLayout Spacing="0">
                 <ActivityIndicator IsVisible="{Binding IsLoggingIn}"
                                    IsRunning="{Binding IsLoggingIn}"/>
                 <Button Text="Login" 
                         TextColor="White"
-                        BackgroundColor="DeepSkyBlue"
+                        BackgroundColor="{StaticResource PrimaryColor}"
                         Command="{Binding LoginCommand}"
-                        IsVisible="{Binding IsLoggingIn, Converter={StaticResource InvertBoolConverter}}"/>
+                        IsVisible="True" />
             </StackLayout>
             
-            <Button Text="Get Me Back" TextColor="DodgerBlue" 
+            <Button Text="Get Me Back" TextColor="{StaticResource PrimaryColor}" 
                     BackgroundColor="Transparent"
                     Command="{Binding PopCommand}" />
         </StackLayout>

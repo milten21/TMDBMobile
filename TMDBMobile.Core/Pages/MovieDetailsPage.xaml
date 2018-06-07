@@ -2,8 +2,19 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
+             xmlns:controls="clr-namespace:TMDBMobile.Core.Controls"
              Title="{Binding Movie.Title}" 
              x:Class="TMDBMobile.Core.Pages.MovieDetailsPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <Style TargetType="BoxView" x:Key="SeparatorLineStyle">
+                <Setter Property="BackgroundColor" Value="Silver" />
+                <Setter Property="HeightRequest" Value="0.5" />
+                <Setter Property="Opacity" Value="0.8" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Spacing="0">
@@ -13,6 +24,37 @@
                                             LoadingPlaceholder="poster_placeholder" ErrorPlaceholder="poster_placeholder" 
                                             Aspect="AspectFit"
                                             Margin="0,0,0,8"/>
+
+                <StackLayout Spacing="0">
+                    <BoxView Style="{StaticResource SeparatorLineStyle}"/>
+
+                    <StackLayout Spacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="Center" HeightRequest="44">
+                        <FlexLayout Direction="Row" JustifyContent="SpaceEvenly" 
+                                    HorizontalOptions="Fill" 
+                                    IsVisible="{Binding IsLoadingDetails, Converter={StaticResource InvertBoolConverter}}">
+                            <controls:ImageButton Image="{Binding IsFavorite, Converter={StaticResource FavoriteIconConverter}}" 
+                                                  Command="{Binding FavoriteCommand}"
+                                                  BackgroundColor="Transparent" 
+                                                  ImageTintColor="{Binding IsFavorite, Converter={StaticResource FavoriteTintColorConverter}}"/>
+                            <controls:ImageButton Image="thumbUp" 
+                                                  Command="{Binding PositiveRateCommand}"
+                                                  BackgroundColor="Transparent" 
+                                                  ImageTintColor="{Binding Rate, Converter={StaticResource LikeColorConverter}}" />
+                            <controls:ImageButton Image="thumbDown" 
+                                                  Command="{Binding NegativeRateCommand}"
+                                                  BackgroundColor="Transparent" 
+                                                  ImageTintColor="{Binding Rate, Converter={StaticResource DislikeColorConverter}}"/>
+                        </FlexLayout>
+                        
+                        <ActivityIndicator IsVisible="{Binding IsLoadingDetails}"
+                                           IsRunning="{Binding IsLoadingDetails}"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center"/>
+                    </StackLayout>
+
+                    <BoxView Style="{StaticResource SeparatorLineStyle}"/>
+                    
+                </StackLayout>
                 
                 <StackLayout Orientation="Horizontal"
                              Padding="16,8">
@@ -30,8 +72,7 @@
                            HorizontalOptions="StartAndExpand"/>
                     <Label Text="{Binding Movie.ReleaseDate, StringFormat='{0:d MMM yyyy}'}"
                            HorizontalOptions="EndAndExpand"/>
-                </StackLayout>
-                
+                </StackLayout>                
 
                 <StackLayout Padding="16,8"
                              Spacing="0">
@@ -39,6 +80,15 @@
                            HorizontalOptions="StartAndExpand"
                            FontAttributes="Bold"/>
                     <Label Text="{Binding Movie.GenreIds, Converter={StaticResource GenresConverter}}" />
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal"
+                             Padding="16,8">
+                    <Label Text="Rate" 
+                           FontAttributes="Bold"
+                           HorizontalOptions="StartAndExpand"/>
+                    <Label Text="{Binding Movie.VoteAverage}"
+                           HorizontalOptions="EndAndExpand"/>
                 </StackLayout>
                 
                 <StackLayout Padding="16,8" 

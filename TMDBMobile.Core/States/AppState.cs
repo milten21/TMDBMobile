@@ -7,5 +7,6 @@
         public DiscoverState DiscoverState { get; set; }
         public FavoriteState FavoriteState { get; set; }
         public DataState DataState { get; set; }
+        public MovieDetailsState MovieDetailsState { get; set; }
     }
 }

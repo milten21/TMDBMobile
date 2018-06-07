@@ -1,5 +1,4 @@
 ﻿using RestSharp;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMDBMobile.Core.Model;
 
@@ -20,5 +19,11 @@ namespace TMDBMobile.Core.Services
 
         Task<IRestResponse<GetGenersResponse>> GetGenres();
         Task<IRestResponse<Profile>> GetProfile();
+
+        Task<IRestResponse<MovieAccountState>> AccountStateForMovie(int movieId);
+
+        Task<IRestResponse<TMDBResponse>> FavoriteMovie(bool isFavorite, int movieId);
+        Task<IRestResponse<TMDBResponse>> RateMovie(int rate, int movieId);
+        Task<IRestResponse<MovieReviewResponse>> GetReviews(int movieId, int page);
     }
 }

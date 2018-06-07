@@ -4,14 +4,14 @@ using TMDBMobile.Core.States;
 
 namespace TMDBMobile.Core.Actions
 {
-    public class FavouriteActionCreator
+    public class FavoriteActionCreator
     {
         private ITMDBService TMDBService { get; }
         private Store<AppState> Store { get; }
 
         public Store<AppState>.AsyncAction LoadNextPageAction { get; private set; }
 
-        public FavouriteActionCreator(ITMDBService tmdbService, IAppStoreContainer storeContainer)
+        public FavoriteActionCreator(ITMDBService tmdbService, IAppStoreContainer storeContainer)
         {
             TMDBService = tmdbService;
             Store = storeContainer.Store;

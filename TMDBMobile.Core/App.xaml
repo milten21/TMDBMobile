@@ -12,7 +12,16 @@
             <convertors:InvertBoolConverter x:Key="InvertBoolConverter"/>
             <convertors:GenresConverter x:Key="GenresConverter"/>
             <convertors:ProfileTitleConverter x:Key="ProfileTitleConverter"/>
+            <convertors:FavoriteIconConverter x:Key="FavoriteIconConverter"/>
+            <convertors:FavoriteTintColorConverter x:Key="FavoriteTintColorConverter"/>
+            <convertors:LikeColorConverter x:Key="LikeColorConverter"/>
+            <convertors:DislikeColorConverter x:Key="DislikeColorConverter"/>
 
+            <OnPlatform x:Key="PrimaryColor" x:TypeArguments="Color">
+                <On Platform="Android" Value="#2196F3" />
+                <On Platform="iOS" Value="#007AFF" />
+            </OnPlatform>
+            
             <Style x:Key="ResultLabelStyle" TargetType="Label">
                 <Setter Property="TextColor" Value="White"/>
                 <Setter Property="Opacity" Value="0.9"/>

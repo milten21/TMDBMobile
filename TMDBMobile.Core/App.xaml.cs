@@ -30,7 +30,8 @@ namespace TMDBMobile
                 .Part(s => s.DiscoverState, DiscoverReducer.GetReducer())
                 .Part(s => s.AuthenticationState, AuthenticationReducer.GetReducer())
                 .Part(s => s.FavoriteState, FavouriteReducer.GetReducer())
-                .Part(s => s.DataState, DataReducer.GetReducer());
+                .Part(s => s.DataState, DataReducer.GetReducer())
+                .Part(s => s.MovieDetailsState, MovieDetailsReducer.GetReducer());
 
             Store = new Store<AppState>(reducer);
         }
@@ -45,7 +46,6 @@ namespace TMDBMobile
             InitializeComponent();
 
             RegisterServices();
-            RegisterActionCreators();
 
             _tabbedPage = new FreshTabbedNavigationContainer();
 
@@ -114,22 +114,6 @@ namespace TMDBMobile
             FreshIOC.Container.Register<ITMDBService, TMDBService>();
 
             FreshIOC.Container.Register<IAppStoreContainer, AppStoreContainer>();
-        }
-
-        private void RegisterActionCreators()
-        {
-            var tmdbService = FreshIOC.Container.Resolve<ITMDBService>();
-
-            // TODO: Find out a solution
-            // Registred as multiinstance, gets crash when trying to register as singleton
-            FreshIOC.Container.Register(new SearchActionCreator(tmdbService,
-                FreshIOC.Container.Resolve<IAppStoreContainer>()));
-            FreshIOC.Container.Register(new DiscoverActionCreator(tmdbService,
-                FreshIOC.Container.Resolve<IAppStoreContainer>()));
-            FreshIOC.Container.Register(new FavouriteActionCreator(tmdbService,
-                FreshIOC.Container.Resolve<IAppStoreContainer>()));
-            FreshIOC.Container.Register(new DataActionCreator(tmdbService,
-                FreshIOC.Container.Resolve<IAppStoreContainer>()));
         }
     }
 }

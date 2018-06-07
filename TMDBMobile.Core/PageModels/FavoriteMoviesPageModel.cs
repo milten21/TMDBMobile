@@ -46,7 +46,7 @@ namespace TMDBMobile.Core.PageModels
 
         public bool IsSearching { get; set; }
 
-        public FavoriteMoviesPageModel(IAppStoreContainer storeContainer, FavouriteActionCreator favouriteActionCreator)
+        public FavoriteMoviesPageModel(IAppStoreContainer storeContainer, FavoriteActionCreator favouriteActionCreator)
         {
             var store = storeContainer.Store;
 

@@ -22,4 +22,8 @@
   <ItemGroup>
     <Compile Remove="Actions\ProfileActions.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controls\" />
+    <Folder Include="Model\Arguments\" />
+  </ItemGroup>
 </Project>
