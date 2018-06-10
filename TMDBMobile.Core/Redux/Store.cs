@@ -123,6 +123,7 @@ namespace TMDBMobile.Core.Redux
             public void Dispatch(Object action)
             {
                 state = rootReducer(state, action);
+
                 foreach (var subscribtion in subscriptions)
                 {
                     subscribtion(state);

@@ -15,8 +15,6 @@
             <Entry Placeholder="Password" 
                    Text="{Binding Password}"
                    IsPassword="True" />
-
-            <Label Text="My bad 2" />
             
             <StackLayout Spacing="0">
                 <ActivityIndicator IsVisible="{Binding IsLoggingIn}"
@@ -25,7 +23,7 @@
                         TextColor="White"
                         BackgroundColor="{StaticResource PrimaryColor}"
                         Command="{Binding LoginCommand}"
-                        IsVisible="True" />
+                        IsVisible="{Binding IsLoggingIn, Converter={StaticResource InvertBoolConverter}}" />
             </StackLayout>
             
             <Button Text="Get Me Back" TextColor="{StaticResource PrimaryColor}" 

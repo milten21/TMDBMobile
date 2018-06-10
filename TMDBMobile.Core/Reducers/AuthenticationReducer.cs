@@ -4,6 +4,7 @@ using TMDBMobile.Core.Actions;
 using TMDBMobile.Core.Redux;
 using TMDBMobile.Core.Services;
 using TMDBMobile.Core.States;
+using Xamarin.Forms;
 
 namespace TMDBMobile.Core.Reducers
 {
@@ -32,6 +33,8 @@ namespace TMDBMobile.Core.Reducers
                     CredentialsManager.Instance.SaveAccount(state.SessionId);
                     FreshIOC.Container.Resolve<ITMDBService>().SetSessionId(state.SessionId);
 
+                    (Application.Current as App)?.AddProfilePage();
+
                     return state;
                 })
                 .When<LoginFailedAction>((state, action) =>
@@ -48,6 +51,7 @@ namespace TMDBMobile.Core.Reducers
                     state.SessionId = null;
 
                     CredentialsManager.Instance.DeleteAccount();
+                    (Application.Current as App)?.RemoveProfilePage();
 
                     return state;
                 })

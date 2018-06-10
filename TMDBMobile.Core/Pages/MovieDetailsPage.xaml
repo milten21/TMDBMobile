@@ -26,9 +26,12 @@
                                             Margin="0,0,0,8"/>
 
                 <StackLayout Spacing="0">
-                    <BoxView Style="{StaticResource SeparatorLineStyle}"/>
+                    <BoxView Style="{StaticResource SeparatorLineStyle}"
+                             IsVisible="{Binding IsAuthenticated}"/>
 
-                    <StackLayout Spacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="Center" HeightRequest="44">
+                    <StackLayout Spacing="0" HorizontalOptions="FillAndExpand" 
+                                 VerticalOptions="Center" HeightRequest="44"
+                                 IsVisible="{Binding IsAuthenticated}">
                         <FlexLayout Direction="Row" JustifyContent="SpaceEvenly" 
                                     HorizontalOptions="Fill" 
                                     IsVisible="{Binding IsLoadingDetails, Converter={StaticResource InvertBoolConverter}}">

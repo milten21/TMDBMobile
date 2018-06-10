@@ -49,7 +49,7 @@ namespace TMDBMobile
 
             _tabbedPage = new FreshTabbedNavigationContainer();
 
-            if(Device.OS == TargetPlatform.iOS)
+            if (Device.OS == TargetPlatform.iOS)
             {
                 _tabbedPage.AddTab<FavoriteMoviesPageModel>("Favorite", "starFilled");
                 _tabbedPage.AddTab<SearchPageModel>("Search", "searchIcon");
@@ -62,7 +62,6 @@ namespace TMDBMobile
 
             var store = FreshIOC.Container.Resolve<IAppStoreContainer>().Store;
 
-            SubscribeAuthenticationChanges(store);
             store.Dispatch(FreshIOC.Container.Resolve<DataActionCreator>().LoadGenresAction);
 
             TryAddProfilePage(store);
@@ -80,25 +79,21 @@ namespace TMDBMobile
             AddProfilePage();
         }
 
-        private void AddProfilePage()
+        internal void AddProfilePage()
         {
+            if (_tabbedPage.TabbedPages.FirstOrDefault(p => p is ProfilePage) != null)
+                return;
+
             if (Device.OS == TargetPlatform.iOS)
                 _tabbedPage.AddTab<ProfilePageModel>("Profile", null);
             else
-                _tabbedPage.AddTab<ProfilePageModel>("Profile", null);            
+                _tabbedPage.AddTab<ProfilePageModel>("Profile", null);
         }
 
-        private void SubscribeAuthenticationChanges(Store<AppState> store)
+        internal void RemoveProfilePage()
         {
-            store.Subscribe(s =>
-            {
-                var state = s.AuthenticationState;
-
-                if (!string.IsNullOrEmpty(state.SessionId) && _tabbedPage.TabbedPages.FirstOrDefault(p => p is ProfilePage) == null)
-                    AddProfilePage();
-                else if (string.IsNullOrEmpty(state.SessionId))
-                    _tabbedPage.RemoveTab<ProfilePage>();
-            });
+            if (_tabbedPage.TabbedPages.FirstOrDefault(p => p is ProfilePage) != null)
+                _tabbedPage.RemoveTab<ProfilePage>();
         }
 
         private void RegisterServices()
