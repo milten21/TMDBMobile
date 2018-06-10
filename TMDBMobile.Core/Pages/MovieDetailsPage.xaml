@@ -53,6 +53,9 @@
                     </StackLayout>
 
                     <BoxView Style="{StaticResource SeparatorLineStyle}"/>
+                    <Button Text="Read Reviews" BackgroundColor="Transparent" 
+                            FontSize="12" TextColor="{StaticResource PrimaryColor}" />
+                    <BoxView Style="{StaticResource SeparatorLineStyle}"/>
                     
                 </StackLayout>
                 
