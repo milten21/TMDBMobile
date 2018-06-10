@@ -8,5 +8,6 @@
         public FavoriteState FavoriteState { get; set; }
         public DataState DataState { get; set; }
         public MovieDetailsState MovieDetailsState { get; set; }
+        public ReviewsState ReviewsState { get; set; }
     }
 }

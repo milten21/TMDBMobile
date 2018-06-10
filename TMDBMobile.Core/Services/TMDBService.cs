@@ -166,6 +166,8 @@ namespace TMDBMobile.Core.Services
         {
             var request = new RestRequest(GetMovieReviewsPath, Method.GET);
 
+            request.AddParameter("movie_id", movieId, ParameterType.UrlSegment);
+
             return await Execute<MovieReviewResponse>(request);
         }
 

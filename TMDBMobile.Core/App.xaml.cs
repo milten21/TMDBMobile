@@ -31,7 +31,8 @@ namespace TMDBMobile
                 .Part(s => s.AuthenticationState, AuthenticationReducer.GetReducer())
                 .Part(s => s.FavoriteState, FavouriteReducer.GetReducer())
                 .Part(s => s.DataState, DataReducer.GetReducer())
-                .Part(s => s.MovieDetailsState, MovieDetailsReducer.GetReducer());
+                .Part(s => s.MovieDetailsState, MovieDetailsReducer.GetReducer())
+                .Part(s => s.ReviewsState, ReviewsReducer.GetReducer());
 
             Store = new Store<AppState>(reducer);
         }
@@ -85,7 +86,7 @@ namespace TMDBMobile
                 return;
 
             if (Device.OS == TargetPlatform.iOS)
-                _tabbedPage.AddTab<ProfilePageModel>("Profile", null);
+                _tabbedPage.AddTab<ProfilePageModel>("Profile", "profile");
             else
                 _tabbedPage.AddTab<ProfilePageModel>("Profile", null);
         }

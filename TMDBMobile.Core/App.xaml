@@ -22,6 +22,12 @@
                 <On Platform="iOS" Value="#007AFF" />
             </OnPlatform>
             
+            <Style TargetType="BoxView" x:Key="SeparatorLineStyle">
+                <Setter Property="BackgroundColor" Value="Silver" />
+                <Setter Property="HeightRequest" Value="0.5" />
+                <Setter Property="Opacity" Value="0.8" />
+            </Style>
+            
             <Style x:Key="ResultLabelStyle" TargetType="Label">
                 <Setter Property="TextColor" Value="White"/>
                 <Setter Property="Opacity" Value="0.9"/>

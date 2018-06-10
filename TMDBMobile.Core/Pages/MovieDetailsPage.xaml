@@ -5,16 +5,6 @@
              xmlns:controls="clr-namespace:TMDBMobile.Core.Controls"
              Title="{Binding Movie.Title}" 
              x:Class="TMDBMobile.Core.Pages.MovieDetailsPage">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-
-            <Style TargetType="BoxView" x:Key="SeparatorLineStyle">
-                <Setter Property="BackgroundColor" Value="Silver" />
-                <Setter Property="HeightRequest" Value="0.5" />
-                <Setter Property="Opacity" Value="0.8" />
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Spacing="0">
@@ -57,7 +47,8 @@
 
                     <BoxView Style="{StaticResource SeparatorLineStyle}"/>
                     <Button Text="Read Reviews" BackgroundColor="Transparent" 
-                            FontSize="12" TextColor="{StaticResource PrimaryColor}" />
+                            FontSize="12" TextColor="{StaticResource PrimaryColor}"
+                            Command="{Binding ReadReviewsCommand}"/>
                     <BoxView Style="{StaticResource SeparatorLineStyle}"/>
                     
                 </StackLayout>

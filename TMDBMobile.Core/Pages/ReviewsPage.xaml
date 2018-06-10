@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:utils="clr-namespace:TMDBMobile.Core.Utils"
+             Title="Reviews"
+             x:Class="TMDBMobile.Core.Pages.ReviewsPage">
+    <ContentPage.Content>
+        <utils:StateContainer State="{Binding State}" VerticalOptions="FillAndExpand">
+            <utils:StateCondition State="LoadingOrLoaded">
+                <StackLayout HorizontalOptions="FillAndExpand"
+                             VerticalOptions="FillAndExpand">
+                    <ListView ItemAppearing="ReviewItemAppearing"
+                              ItemSelected="ReviewSelected"
+                              ItemsSource="{Binding Reviews}"
+                              VerticalOptions="FillAndExpand"
+                              HasUnevenRows="True"
+                              SeparatorVisibility="None">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Frame Padding="8" Margin="8">
+                                        <StackLayout>
+                                            <Label Text="{Binding Author}" FontSize="Large" />
+                                            <BoxView Style="{StaticResource SeparatorLineStyle}" />
+                                            <Label Text="{Binding Content}" />
+                                        </StackLayout>
+                                    </Frame>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.Footer>
+                            <StackLayout>
+                                <ActivityIndicator HorizontalOptions="Center"
+                                                   VerticalOptions="Center"
+                                                   IsRunning="{Binding IsLoading}"
+                                                   IsVisible="{Binding IsLoading}" />
+                            </StackLayout>
+                        </ListView.Footer>
+                    </ListView>
+                    <Button Text="Back" BackgroundColor="Transparent" TextColor="{StaticResource PrimaryColor}"
+                            Command="{Binding DismissCommand}"/>
+                </StackLayout>
+            </utils:StateCondition>
+
+            <utils:StateCondition State="Empty">
+                <StackLayout HorizontalOptions="Center"
+                                 VerticalOptions="Center">
+                    <Label Text="This movie has no reviews" VerticalOptions="CenterAndExpand" />
+                    <Button Text="Back" Command="{Binding DismissCommand}" BackgroundColor="Transparent"
+                            TextColor="{StaticResource PrimaryColor}"/>
+                </StackLayout>
+            </utils:StateCondition>
+
+            <utils:StateCondition State="Error">
+                <StackLayout HorizontalOptions="Center"
+                             VerticalOptions="Center">
+                    <Label Text="{Binding Error}" />
+                    <Button Text="Back" Command="{Binding DismissCommand}" />
+                </StackLayout>
+            </utils:StateCondition>
+        </utils:StateContainer>
+
+    </ContentPage.Content>
+</ContentPage>

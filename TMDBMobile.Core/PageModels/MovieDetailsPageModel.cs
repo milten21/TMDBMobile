@@ -6,6 +6,8 @@ using TMDBMobile.Core.Model;
 using TMDBMobile.Core.Redux;
 using TMDBMobile.Core.States;
 using Xamarin.Forms;
+using FreshMvvm;
+using System;
 
 namespace TMDBMobile.Core.PageModels
 {
@@ -25,13 +27,18 @@ namespace TMDBMobile.Core.PageModels
         public ICommand FavoriteCommand { get; set; }
         public ICommand PositiveRateCommand { get; set; }
         public ICommand NegativeRateCommand { get; set; }
+        public ICommand ReadReviewsCommand { get; set; }
 
         private MovieDetailActionCreator MovieDetailActionCreator { get; }
+        private ReviewActionCreator ReviewActionCreator { get; }
         private Store<AppState> Store { get; }
 
-        public MovieDetailsPageModel(IAppStoreContainer storeContainer, MovieDetailActionCreator movieDetailActionCreator)
+        public MovieDetailsPageModel(IAppStoreContainer storeContainer, 
+            MovieDetailActionCreator movieDetailActionCreator,
+            ReviewActionCreator reviewActionCreator)
         {
             MovieDetailActionCreator = movieDetailActionCreator;
+            ReviewActionCreator = reviewActionCreator;
             Store = storeContainer.Store;
 
             Store.Subscribe(s => 
@@ -84,18 +91,32 @@ namespace TMDBMobile.Core.PageModels
                     MovieId = Movie.Id
                 }));
             });
+
+            ReadReviewsCommand = new FreshAwaitCommand(async (parameter, tcs) =>
+            {
+                await CoreMethods.PushPageModel<ReviewsPageModel>(Movie, true, true);
+                tcs.SetResult(true);
+
+                await Store.Dispatch(ReviewActionCreator.LoadReviewsAction(Movie.Id));
+            });
         }
 
         public override void Init(object initData)
         {
             if (!(initData is Movie movie))
                 return;
-            
+
             Movie = movie;
-            
+
             Title = Movie.Title;
 
-            Store.Dispatch(MovieDetailActionCreator.LoadMovieDetailsAction(Movie.Id));
+        }
+
+        protected override async void ViewIsAppearing(object sender, EventArgs e)
+        {
+            base.ViewIsAppearing(sender, e);
+
+            await Store.Dispatch(MovieDetailActionCreator.LoadMovieDetailsAction(Movie.Id));
         }
     }
 }
